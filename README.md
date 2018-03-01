@@ -13,5 +13,4 @@ difference in starting conditions was that one pendulum was 10 degrees higher:
 
 ![figure of pendulums](https://github.com/elterminad0r/double_pendulum/blob/master/chaotic.png)
 
-See also [this](https://)
-video of it in action
+See also [this](https://youtu.be/eM7zUfZCPS0) video of it in action.
