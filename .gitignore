@@ -1,0 +1,14 @@
+*\$py.class
+*.py[co]
+*.pyc
+__pycache__/**
+bin
+*.aux
+*.log
+*.toc
+*.bbl
+*.blg
+*.dvi
+*.lol
+*.out
+*.lof
