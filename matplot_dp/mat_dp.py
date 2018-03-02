@@ -24,6 +24,7 @@ import matplotlib.animation as animation
 from itertools import chain
 
 DT = 0.03
+TOTAL_T = 20
 TRAIL_WIDTH = 1
 PEND_WIDTH = 2
 
@@ -36,8 +37,8 @@ def get_args():
 def join_mat_funcs(*funcs):
     return lambda *args: tuple(chain.from_iterable(f(*args) for f in funcs))
 
-class Pendulum:
-    def __init__(self, G, L1, L2, M1, M2, dt, th1, w1, th2, w2, ax):
+class DoublePendulum:
+    def __init__(self, G, L1, L2, M1, M2, dt, total_t, th1, w1, th2, w2, ax):
         self.G = G        # acceleration due to gravity, in m/s^2
         self.L1 = L1      # length of pendulum 1 in m
         self.L2 = L2      # length of pendulum 2 in m
@@ -52,7 +53,7 @@ class Pendulum:
         # initial state
         self.state = np.radians([th1, w1, th2, w2])
         # create the time array
-        self.t = np.arange(0.0, 20, dt)
+        self.t = np.arange(0.0, total_t, dt)
         # integrate your ODE using scipy.integrate.
         self.y = integrate.odeint(self.derivs, self.state, self.t)
 
@@ -122,15 +123,18 @@ if __name__ == "__main__":
         ax.set_ylim((-2, 2))
         ax.set_aspect("equal")
 
-    pend1 = Pendulum(G=9.8, L1=1.0, L2=1.0, M1=1.0, M2=1.0, dt=DT,
-                     th1=120.0, w1=0.01, th2=-10.0, w2=0.0, ax=ax1)
-    pend2 = Pendulum(G=9.8, L1=1.0, L2=1.0, M1=1.0, M2=1.0, dt=DT,
-                     th1=130.0, w1=0.01, th2=-10.0, w2=0.0, ax=ax2)
+    pend1 = DoublePendulum(G=9.8, L1=1.0, L2=1.0, M1=1.0, M2=1.0,
+                           dt=DT, total_t=TOTAL_T,
+                           th1=120.0, w1=0.01, th2=-10.0, w2=0.0, ax=ax1)
+
+    pend2 = DoublePendulum(G=9.8, L1=1.0, L2=1.0, M1=1.0, M2=1.0,
+                           dt=DT, total_t=TOTAL_T,
+                           th1=130.0, w1=0.01, th2=-10.0, w2=0.0, ax=ax2)
 
     ani = animation.FuncAnimation(fig,
                                   join_mat_funcs(pend1.animate, pend2.animate),
                                   np.arange(1, len(pend1.y)),
-                                  interval=25, blit=True,
+                                  interval=int(1000 * DT), blit=True,
                                   init_func=join_mat_funcs(pend1.init, pend2.init))
 
     plt.gca().set_aspect('equal', adjustable='box')
