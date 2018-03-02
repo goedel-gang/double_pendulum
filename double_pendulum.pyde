@@ -14,19 +14,24 @@ from pde_pendulum import DoublePendulum
 FPS = 60
 DT = 1.0 / FPS
 
-FRICTION = 0.995
+FRICTION = 1
 
 def setup():
-    global pend1
-    size(800, 800)
+    global pend1, pend2
+    size(720, 480)
     frameRate(FPS)
     imageMode(CORNER)
-    pend1 = DoublePendulum(G=9.8, L1=150, L2=150, M1=10, M2=10, dt=DT,
-                           th1=120.0, w1=0.01, th2=-10.0, w2=0.0,
-                           cx=width / 2, cy=height / 2, friction=FRICTION)
-
+    pend1 = DoublePendulum(G=9.8, L1=2, L2=1.5, M1=1, M2=1, dt=DT,
+                           th1=120.0, w1=-50, th2=-10.0, w2=-50,
+                           cx=width / 4, cy=height / 2, friction=FRICTION,
+                           p_col=color(0, 0, 255), t_col=color(0x66, 0, 255))
+    pend2 = DoublePendulum(G=9.8, L1=2, L2=1.5, M1=1, M2=1, dt=DT,
+                           th1=130.0, w1=-50, th2=-10.0, w2=-50,
+                           cx=3 * width / 4, cy=height / 2, friction=FRICTION,
+                           p_col=color(220, 220, 0), t_col=color(255, 70, 0))
 def draw():
-    background(0)
+    background(230)
     pend1.update()
+    pend2.update()
     pend1.draw()
-    print(frameRate)
+    pend2.draw()

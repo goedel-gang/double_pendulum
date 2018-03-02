@@ -1,7 +1,10 @@
-class DoublePendulum(object):
-    __slots__ = "G L1 L2 M1 M2 dt th1 w1 th2 w2 canvas x1 y1 x2 y2 px1 py1 px2 py2 cx cy friction".split()
+L_SCALE = 50
+M_SCALE = 20
 
-    def __init__(self, G, L1, L2, M1, M2, dt, th1, w1, th2, w2, cx, cy, friction):
+class DoublePendulum(object):
+    __slots__ = "G L1 L2 M1 M2 dt th1 w1 th2 w2 canvas x1 y1 x2 y2 px1 py1 px2 py2 cx cy friction p_col t_col".split()
+
+    def __init__(self, G, L1, L2, M1, M2, dt, th1, w1, th2, w2, cx, cy, friction, p_col, t_col):
         self.G   = G       # acceleration due to gravity, in m/s^2
         self.L1  = L1      # length of pendulum 1 in m
         self.L2  = L2      # length of pendulum 2 in m
@@ -15,6 +18,8 @@ class DoublePendulum(object):
         self.cx = cx       # centre x
         self.cy = cy       # centre y
         self.friction = friction ** dt # friction scalar
+        self.p_col = p_col
+        self.t_col = t_col
 
         # canvas to draw the trail on
         self.canvas = createGraphics(width, height)
@@ -24,20 +29,20 @@ class DoublePendulum(object):
         self.px1, self.py1, self.px2, self.py2 = self.x1, self.y1, self.x2, self.y2
 
     def calculate_coords(self):
-        self.x1 = self.cx + self.L1 * sin(self.th1)
-        self.y1 = self.cy + self.L1 * cos(self.th1)
-        self.x2 = self.x1 + self.L2 * sin(self.th2)
-        self.y2 = self.y1 + self.L2 * cos(self.th2)
+        self.x1 = self.cx + self.L1 * sin(self.th1) * L_SCALE
+        self.y1 = self.cy + self.L1 * cos(self.th1) * L_SCALE
+        self.x2 = self.x1 + self.L2 * sin(self.th2) * L_SCALE
+        self.y2 = self.y1 + self.L2 * cos(self.th2) * L_SCALE
 
     def draw(self):
         image(self.canvas, 0, 0, width, height)
-        stroke(255)
+        stroke(self.p_col)
         strokeWeight(2)
-        fill(255)
+        fill(self.p_col)
         line(self.cx, self.cy, self.x1, self.y1)
-        ellipse(self.x1, self.y1, self.M1, self.M1)
+        ellipse(self.x1, self.y1, self.M1 * M_SCALE, self.M1 * M_SCALE)
         line(self.x1, self.y1, self.x2, self.y2)
-        ellipse(self.x2, self.y2, self.M2, self.M2)
+        ellipse(self.x2, self.y2, self.M2 * M_SCALE, self.M2 * M_SCALE)
 
     def update(self):
         w1p = ((-self.G * (2 * self.M1 + self.M2) * sin(self.th1) +
@@ -54,8 +59,8 @@ class DoublePendulum(object):
 
         self.w1 += w1p * self.dt
         self.w2 += w2p * self.dt
-        self.th1 += self.w1
-        self.th2 += self.w2
+        self.th1 += self.w1 * self.dt
+        self.th2 += self.w2 * self.dt
 
         self.w1 *= self.friction
         self.w2 *= self.friction
@@ -63,7 +68,7 @@ class DoublePendulum(object):
         self.calculate_coords()
 
         self.canvas.beginDraw()
-        self.canvas.stroke(255)
+        self.canvas.stroke(self.t_col)
         self.canvas.line(self.px2, self.py2, self.x2, self.y2)
         self.canvas.endDraw()
 

@@ -20,4 +20,12 @@ double pendulum. This sketch drew the maths from the
 [video](https://www.youtube.com/watch?v=uWzPe_S-RVE)
 and [code](https://github.com/CodingTrain/website/blob/master/CodingChallenges/CC_93_DoublePendulum/CC_93_DoublePendulum.pde)
 by Daniel Shiffman, although mostly for formulae - the sketch is now in an
-entirely different language, for example.
+entirely different language, for example. It has similarly been modified to
+encapsulate each double pendulum in an object, and shows two simultaneously. It
+looks like this:
+
+![figure of pendulums](https://github.com/elterminad0r/double_pendulum/blob/master/pde_chaotic.png)
+
+The crucial difference between the two animations is that the first is more
+accurate, but the second is iterative so slightly less processing-intensive
+near the start and can continue indefinitely.
