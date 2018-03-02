@@ -129,7 +129,7 @@ if __name__ == "__main__":
 
     pend2 = DoublePendulum(G=9.8, L1=1.0, L2=1.0, M1=1.0, M2=1.0,
                            dt=DT, total_t=TOTAL_T,
-                           th1=130.0, w1=0.01, th2=-10.0, w2=0.0, ax=ax2)
+                           th1=120.1, w1=0.01, th2=-10.0, w2=0.0, ax=ax2)
 
     ani = animation.FuncAnimation(fig,
                                   join_mat_funcs(pend1.animate, pend2.animate),
